@@ -44,3 +44,9 @@ ckpt/*
 
 #pytest cache
 .cache/
+
+#cython files
+*.so
+
+# vscode
+.vscode/

@@ -1,5 +1,6 @@
 from . import yolo
 from . import yolov2
+from . import yolomask
 from . import vanilla
 from os.path import basename
 
@@ -43,6 +44,9 @@ class YOLOv2(framework):
     resize_input = yolo.predict.resize_input
     findboxes = yolov2.predict.findboxes
     process_box = yolo.predict.process_box
+
+class YOLOMASK(YOLOv2):
+    pass
 
 """
 framework factory

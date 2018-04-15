@@ -112,7 +112,7 @@ class TFNet(object):
 		for i, layer in enumerate(self.darknet.layers):
 			scope = '{}-{}'.format(str(i),layer.type)
 			args = [layer, state, i, roof, self.feed]
-			state = op_create(*args)
+			state = op_create(self.inp, *args)
 			mess = state.verbalise()
 			self.say(mess)
 		self.say(LINE)

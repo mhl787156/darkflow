@@ -1,5 +1,6 @@
 from .simple import *
 from .convolution import *
+from .boxaggregator import *
 from .baseop import HEADER, LINE
 
 op_types = {
@@ -19,9 +20,12 @@ op_types = {
 	'route': route,
 	'reorg': reorg,
 	'conv-extract': conv_extract,
-	'extract': extract
+	'extract': extract,
+	'boxaggregator': boxaggregator
 }
 
-def op_create(*args):
+def op_create(inpt, *args):
 	layer_type = list(args)[0].type
+	if layer_type == 'boxaggregator':
+		op_types[layer_type](identity(inpt),*args)
 	return op_types[layer_type](*args)

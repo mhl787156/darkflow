@@ -18,6 +18,10 @@ def build_train_op(self):
     gradients = optimizer.compute_gradients(self.framework.loss)
     self.train_op = optimizer.apply_gradients(gradients)
 
+def build_tfrecord_input_op(self):
+    self.framework.input_pipeline(self.inp)
+    self.say('Building input pipeline')
+
 def load_from_ckpt(self):
     if self.FLAGS.load < 0: # load lastest ckpt
         with open(os.path.join(self.FLAGS.backup, 'checkpoint'), 'r') as f:

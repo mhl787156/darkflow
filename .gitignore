@@ -50,3 +50,7 @@ ckpt/*
 
 # vscode
 .vscode/
+
+VOCdevkit/
+tfrecord/
+*.tar

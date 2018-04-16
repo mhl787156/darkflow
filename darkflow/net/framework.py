@@ -46,7 +46,14 @@ class YOLOv2(framework):
     process_box = yolo.predict.process_box
 
 class YOLOMASK(YOLOv2):
-    pass
+    parse = yolomask.data.parse
+    shuffle = yolomask.data.shuffle
+    input_pipeline = yolomask.data.input_pipeline
+    resize_input = yolomask.predict.resize_input
+    _decode = yolomask.data._decode
+    _batch = yolomask.data._batch
+    # loss = yolomask.train.loss
+    
 
 """
 framework factory
@@ -54,10 +61,11 @@ framework factory
 
 types = {
     '[detection]': YOLO,
-    '[region]': YOLOv2
+    '[region]': YOLOv2,
+    '[mask]': YOLOMASK
 }
 
 def create_framework(meta, FLAGS):
     net_type = meta['type']
     this = types.get(net_type, framework)
-    return this(meta, FLAGS)
+    return this(meta, FLAGS), net_type=='[mask]'

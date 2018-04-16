@@ -33,21 +33,22 @@ def loss(self, net_out):
     print('\tclasses = {}'.format(m['classes']))
     print('\tscales  = {}'.format([sprob, sconf, snoob, scoor]))
 
-    size1 = [None, HW, B, C]
-    size2 = [None, HW, B]
+    batch_size = self.FLAGS.batch
+    size1 = [batch_size, HW, B, C]
+    size2 = [batch_size, HW, B]
 
     # return the below placeholders
-    _probs = tf.placeholder(tf.float32, size1)
-    _confs = tf.placeholder(tf.float32, size2)
-    _coord = tf.placeholder(tf.float32, size2 + [4])
+    _probs = tf.get_variable('probs', size1, dtype=tf.float32, initializer=tf.zeros_initializer)
+    _confs = tf.get_variable('confs', size2, dtype=tf.float32, initializer=tf.zeros_initializer)
+    _coord = tf.get_variable('coord', size2 + [4], dtype=tf.float32, initializer=tf.zeros_initializer)
     # weights term for L2 loss
-    _proid = tf.placeholder(tf.float32, size1)
+    _proid = tf.get_variable('proid', size1, dtype=tf.float32, initializer=tf.zeros_initializer)
     # material calculating IOU
-    _areas = tf.placeholder(tf.float32, size2)
-    _upleft = tf.placeholder(tf.float32, size2 + [2])
-    _botright = tf.placeholder(tf.float32, size2 + [2])
+    _areas = tf.get_variable('areas', size2, dtype=tf.float32, initializer=tf.zeros_initializer)
+    _upleft = tf.get_variable('upleft', size2 + [2], dtype=tf.float32, initializer=tf.zeros_initializer)
+    _botright = tf.get_variable('upright', size2 + [2], dtype=tf.float32, initializer=tf.zeros_initializer)
 
-    self.placeholders = {
+    self.variables = {
         'probs':_probs, 'confs':_confs, 'coord':_coord, 'proid':_proid,
         'areas':_areas, 'upleft':_upleft, 'botright':_botright
     }

@@ -18,6 +18,7 @@ def constructor(self, meta, FLAGS):
 		return (b * 127, r * 127, g * 127)
 	if 'labels' not in meta:
 		misc.labels(meta, FLAGS) #We're not loading from a .pb so we do need to load the labels
+	print(meta['labels'], meta['classes'])
 	assert len(meta['labels']) == meta['classes'], (
 		'labels.txt and {} indicate' + ' '
 		'inconsistent class numbers'

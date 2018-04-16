@@ -2,6 +2,7 @@ import tensorflow as tf
 import time
 from . import help
 from . import flow
+from . import flowtfrecord
 from .ops import op_create, identity
 from .ops import HEADER, LINE
 from .framework import create_framework
@@ -32,6 +33,7 @@ class TFNet(object):
 	to_darknet = help.to_darknet
 	build_train_op = help.build_train_op
 	load_from_ckpt = help.load_from_ckpt
+	build_tfrecord_input_op = help.build_tfrecord_input_op
 
 	def __init__(self, FLAGS, darknet = None):
 		self.ntrain = 0
@@ -61,7 +63,9 @@ class TFNet(object):
 		self.darknet = darknet
 		args = [darknet.meta, FLAGS]
 		self.num_layer = len(darknet.layers)
-		self.framework = create_framework(*args)
+		self.framework, ismaskyolo = create_framework(*args)
+		if ismaskyolo:
+			self.train = flowtfrecord.train
 		
 		self.meta = darknet.meta
 
@@ -137,6 +141,8 @@ class TFNet(object):
 			cfg['device_count'] = {'GPU': 0}
 
 		if self.FLAGS.train: self.build_train_op()
+
+		if self.FLAGS.tfrecord: self.build_tfrecord_input_op()
 		
 		if self.FLAGS.summary:
 			self.summary_op = tf.summary.merge_all()

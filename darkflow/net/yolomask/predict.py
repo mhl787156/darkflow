@@ -3,9 +3,7 @@ import math
 import cv2
 import os
 import json
-#from scipy.special import expit
-#from utils.box import BoundBox, box_iou, prob_compare
-#from utils.box import prob_compare2, box_intersection
+import tensorflow as tf
 from ...utils.box import BoundBox
 from ...cython_utils.cy_yolo2_findboxes import box_constructor
 
@@ -16,6 +14,12 @@ def _softmax(x):
     e_x = np.exp(x - np.max(x))
     out = e_x / e_x.sum()
     return out
+
+def resize_input(self, im):
+	h, w, c = self.meta['inp_size']
+	imsz = tf.image.resize_images(im, (w, h))
+	imsz = imsz / 255.
+	return imsz
 
 def findboxes(self, net_out):
 	# meta
